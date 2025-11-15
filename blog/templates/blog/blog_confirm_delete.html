@@ -1,7 +1,7 @@
-{% extends 'catalog/base.html' %}
-{% block title %}Удаление продукта{% endblock %}
+{% extends 'blog/base.html' %}
+{% block title %}Удаление блога{% endblock %}
 {% block content %}
-{% include 'catalog/menu.html' %}
+{% include 'blog/menu.html' %}
 <div class="container mt-5">
     <div class="row">
         <div class="col">
@@ -11,10 +11,10 @@
                         {% csrf_token %}
                         {{ form.as_p }}
                     </div>
-                    <h4 class="text-danger"> Вы действительно хотите удалить {{ object.name }}?</h4>
+                    <h4 class="text-danger"> Вы действительно хотите удалить блог "{{ object.title}}"?</h4>
                     <div class="d-grid gap-5 d-md-flex justify-content-md-center m-5">
                         <button type="submit" class="btn btn-danger btn-lg">Удалить</button>
-                        <a class="btn btn-primary btn-lg" href="{% url 'catalog:product_list' %}"
+                        <a class="btn btn-dark btn-lg" href="{% url 'blog:blog_list' %}"
                            role="button">Отменить</a>
                     </div>
                 </div>

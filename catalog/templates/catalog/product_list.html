@@ -1,8 +1,8 @@
-{% extends 'catalog/template.html' %}
+{% extends 'catalog/base.html' %}
 {% block title %}Главная{% endblock %}
 {% load product_tags %}
 {% block content %}
-{% include 'catalog/subtemplate.html' %}
+{% include 'catalog/menu.html' %}
 <div class="row row-cols-md-3 g-4 m-5">
     {% for product in object_list %}
     <div class="col d-flex flex-wrap align-items-stretch">

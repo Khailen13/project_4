@@ -1,8 +1,8 @@
-{% extends 'catalog/template.html' %}
+{% extends 'catalog/base.html' %}
 {% block title %}{{ object.name }}{% endblock %}
 {% load product_tags %}
 {% block content %}
-{% include 'catalog/subtemplate.html' %}
+{% include 'catalog/menu.html' %}
 <div class="container mt-5">
     <a class="btn btn-outline-primary mb-3" href="{% url 'catalog:product_list' %}" role="button"><strong>Все
         продукты</strong></a>
