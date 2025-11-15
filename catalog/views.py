@@ -1,23 +1,36 @@
+from symtable import Class
+
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, TemplateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from .models import Product
 
+class ProductsListView(ListView):
+    model = Product
 
-def contacts(request):
-    if request.method == "POST":
-        name = request.POST.get("name")
-        return HttpResponse(f"Спасибо, {name}! Сообщение получено.")
-    return render(request, "product/contacts.html")
+class ProductDetailView(DetailView):
+    model = Product
 
-
-def main(request):
-    products = Product.objects.all()
-    context = {"products": products}
-    return render(request, "product/index.html", context)
+class ProductCreateView(CreateView):
+    model = Product
+    fields = ['name', 'description', 'image', 'category', 'price']
+    success_url = reverse_lazy('catalog:product_list')
 
 
-def product(request, pk):
-    product = Product.objects.get(id=pk)
-    context = {"product": product}
-    return render(request, "product/product.html", context)
+class ProductUpdateView(UpdateView):
+    model = Product
+    fields = ['name', 'description', 'image', 'category', 'price']
+    success_url = reverse_lazy('catalog:product_list')
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    template_name = 'catalog/product_confirm_delete.html'
+    success_url = reverse_lazy('catalog:product_list')
+
+
+class ContactViews(TemplateView):
+    template_name = "catalog/contacts.html"

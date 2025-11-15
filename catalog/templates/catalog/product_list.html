@@ -1,18 +1,17 @@
-{% extends 'product/template.html' %}
+{% extends 'catalog/template.html' %}
 {% block title %}Главная{% endblock %}
 {% load product_tags %}
-
 {% block content %}
-{% include 'product/subtemplate.html' %}
+{% include 'catalog/subtemplate.html' %}
 <div class="row row-cols-md-3 g-4 m-5">
-    {% for product in products %}
+    {% for product in object_list %}
     <div class="col d-flex flex-wrap align-items-stretch">
         <div class="card p-3">
             <div class="embed-responsive embed-responsive-16by9 text-center">
                 <img src="{{product.image | media_filter}}" class="img-fluid" style="height: 20rem;" alt="Изображение">
             </div>
             <div class="card-body">
-                <a class="btn btn-outline-primary w-100 mt-3 mb-3" href="{% url 'catalog:product' product.pk %}"
+                <a class="btn btn-outline-primary w-100 mt-3 mb-3" href="{% url 'catalog:product_detail' product.pk %}"
                    role="button"><strong>{{ product.name }}</strong></a>
                 <p class="card-text">{{ product.description|truncatechars:100 }}</p>
             </div>
