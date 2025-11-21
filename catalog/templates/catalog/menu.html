@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-lg bg-primary fs-5" data-bs-theme="dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'catalog:product_list' %}"><i class="bi bi-box2-heart"></i> Интернет-магазин </a>
+        <a class="navbar-brand" href="{% url 'catalog:product_list' %}"><i class="bi bi-box2-heart"></i>
+            Интернет-магазин </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -11,12 +12,27 @@
                     <a class="nav-link active" aria-current="page" href="{% url 'catalog:product_list' %}">Главная</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'catalog:product_create' %}">Добавить продукт</a>
+                    <a class="nav-link active" aria-current="page" href="{% url 'catalog:product_create' %}">Добавить
+                        продукт</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" href="{% url 'catalog:contacts' %}">Контакты</a>
                 </li>
-
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <form method="post" action="{% url 'users:logout' %}" style="display: inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-link nav-link active">Выйти</button>
+                    </form>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'users:login' %}">Войти</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'users:register' %}">Регистрация</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </div>
