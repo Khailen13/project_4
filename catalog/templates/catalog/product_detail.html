@@ -31,8 +31,25 @@
             </div>
             <div class="col-6">
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <a class="btn btn-outline-primary btn-lg" href="{% url 'catalog:product_update' product.pk %}" role="button"><i class="bi bi-wrench"></i></a>
-                    <a class="btn btn-outline-danger btn-lg" href="{% url 'catalog:product_delete' product.pk %}" role="button"><i class="bi bi-trash"></i></a>
+                    {% if "catalog.can_unpublish_product" in perms %}
+                    <form action="{% url 'catalog:product_unpublish' product.pk %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger"> Отменить публикацию </button>
+                    </form>
+                    {% endif %}
+                    {% if object.owner == user %}
+                     <form action="{% url 'catalog:product_update' product.pk %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger"> Редактировать </button>
+                    </form>
+                    {% endif %}
+                    {% if "catalog.can_unpublish_product" in perms or catalog.product.owner == user %}
+                    <form action="{% url 'catalog:product_delete' product.pk %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger"> Удалить </button>
+                    </form>
+                    {% endif %}
+
                 </div>
             </div>
         </div>

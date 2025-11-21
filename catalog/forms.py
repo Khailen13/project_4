@@ -22,6 +22,8 @@ class ProductForm(forms.ModelForm):
         exclude = [
             "created_at",
             "updated_at",
+            "is_published",
+            "owner",
         ]
 
     def __init__(self, *args, **kwargs):
