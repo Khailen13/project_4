@@ -22,31 +22,33 @@
                 </div>
             </div>
         </div>
-        <div class="row g-0 mt-3 mb-3">
+        <div class="row g-0">
+            <p class="card-text"><small class="text-body-secondary">
+                     Владелец: {{ object.owner }}</small>
+                </p>
+        </div>
+        <div class="row g-0 mt-3">
             <div class="col-6">
                 <p class="card-text"><small class="text-body-secondary">
-                    Добавлено: {{ object.created_at|date:"d M Y" }} г. | Обновлено: {{ object.updated_at|date:"d M Y" }}
-                    г.</small>
+                    Добавлено: {{ object.created_at|date:"d M Y" }} г. |
+                    Обновлено: {{ object.updated_at|date:"d M Y" }} г.</small>
                 </p>
             </div>
             <div class="col-6">
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    {% if object.owner == user %}
+                    <a class="btn btn-outline-primary" href="{% url 'catalog:product_update' product.pk %}"><i class="bi bi-tools"></i> Редактировать</a>
+                    {% endif %}
                     {% if "catalog.can_unpublish_product" in perms %}
                     <form action="{% url 'catalog:product_unpublish' product.pk %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-danger"> Отменить публикацию </button>
+                        <button type="submit" class="btn btn-outline-danger" role="button"><i class="bi bi-clipboard2-x"></i> Снять публикацию </button>
                     </form>
                     {% endif %}
-                    {% if object.owner == user %}
-                     <form action="{% url 'catalog:product_update' product.pk %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-danger"> Редактировать </button>
-                    </form>
-                    {% endif %}
-                    {% if "catalog.can_unpublish_product" in perms or catalog.product.owner == user %}
+                    {% if "catalog.can_unpublish_product" in perms or object.owner == user %}
                     <form action="{% url 'catalog:product_delete' product.pk %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-danger"> Удалить </button>
+                        <button type="submit" class="btn btn-outline-danger"><i class="bi bi-trash"></i> Удалить</button>
                     </form>
                     {% endif %}
 

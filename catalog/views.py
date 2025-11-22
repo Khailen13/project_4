@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponseForbidden, HttpResponseRedirect
+from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView, TemplateView, View
@@ -37,27 +37,22 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("catalog:product_list")
 
     def post(self, request, *args, **kwargs):
-        # self.object = self.get_object()
         product_id = kwargs.get("pk")
         product = get_object_or_404(Product, id=product_id)
         if product.owner != request.user:
             return HttpResponseForbidden("Право редактирования есть только у владельца.")
-            # raise PermissionDenied
         return super().post(request, *args, **kwargs)
-        # redirect("catalog:product_list")
 
 
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = "catalog/product_confirm_delete.html"
-    # success_url = reverse_lazy("catalog:product_list")
 
     def post(self, request, *args, **kwargs):
         product_id = kwargs.get("pk")
         product = get_object_or_404(Product, id=product_id)
         if not (request.user.has_perm("catalog.delete_product") or product.owner == request.user):
             return HttpResponseForbidden("У вас нет прав для удаления продукта.")
-            # raise PermissionDenied
         product.delete()
         return redirect("catalog:product_list")
 
