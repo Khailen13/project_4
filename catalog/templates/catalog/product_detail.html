@@ -4,13 +4,16 @@
 {% block content %}
 {% include 'catalog/menu.html' %}
 <div class="container mt-5">
-    <a class="btn btn-outline-primary mb-3" href="{% url 'catalog:product_list' %}" role="button"><strong>Все
-        продукты</strong></a>
+    <div class="d-grid gap-2 d-md-block">
+        <a class="btn btn-outline-primary mb-3" href="{% url 'catalog:category_product_list' product.category_id %}"
+           role="button"><strong> Продукты категории "{{ object.category }}"</strong></a>
+        <a class="btn btn-outline-primary mb-3" href="{% url 'catalog:product_list' %}" role="button"><strong>Все
+            продукты</strong></a>
+    </div>
+
     <div class="card mb-3 p-3">
         <h3 class="card-title text-primary">{{ object.name }}</h3>
-        <p class="card-text"><small class="text-body-secondary">
-            Категория: {{ object.category }}
-        </small></p>
+
         <h3><span class="badge rounded-pill text-bg-primary">{{ object.price }} руб.</span></h3>
         <div class="row g-0 mt-3 mb-3">
             <div class="col-md-4 align-self-center">
@@ -24,8 +27,8 @@
         </div>
         <div class="row g-0">
             <p class="card-text"><small class="text-body-secondary">
-                     Владелец: {{ object.owner }}</small>
-                </p>
+                Владелец: {{ object.owner }}</small>
+            </p>
         </div>
         <div class="row g-0 mt-3">
             <div class="col-6">
@@ -37,18 +40,22 @@
             <div class="col-6">
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     {% if object.owner == user %}
-                    <a class="btn btn-outline-primary" href="{% url 'catalog:product_update' product.pk %}"><i class="bi bi-tools"></i> Редактировать</a>
+                    <a class="btn btn-outline-primary" href="{% url 'catalog:product_update' product.pk %}"><i
+                            class="bi bi-tools"></i> Редактировать</a>
                     {% endif %}
                     {% if "catalog.can_unpublish_product" in perms %}
                     <form action="{% url 'catalog:product_unpublish' product.pk %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-danger" role="button"><i class="bi bi-clipboard2-x"></i> Снять публикацию </button>
+                        <button type="submit" class="btn btn-outline-danger" role="button"><i
+                                class="bi bi-clipboard2-x"></i> Снять публикацию
+                        </button>
                     </form>
                     {% endif %}
                     {% if "catalog.can_unpublish_product" in perms or object.owner == user %}
                     <form action="{% url 'catalog:product_delete' product.pk %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-danger"><i class="bi bi-trash"></i> Удалить</button>
+                        <button type="submit" class="btn btn-outline-danger"><i class="bi bi-trash"></i> Удалить
+                        </button>
                     </form>
                     {% endif %}
 

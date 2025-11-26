@@ -7,11 +7,15 @@ from django.views.generic import DetailView, ListView, TemplateView, View
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from .forms import ProductForm
-from .models import Product
+from .models import Category, Product
+from .services import get_category_products, get_products_from_cache
 
 
 class ProductsListView(ListView):
     model = Product
+
+    def get_queryset(self):
+        return get_products_from_cache()
 
 
 class ProductDetailView(LoginRequiredMixin, DetailView):
@@ -68,6 +72,19 @@ class ProductUnpublishView(LoginRequiredMixin, View):
         product.is_published = False
         product.save()
         return redirect("catalog:product_list")
+
+
+class CategoryProductsListView(LoginRequiredMixin, ListView):
+    model = Product
+    template_name = "catalog/category_product_list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category_id = self.kwargs.get("category_id")
+        category_name = Category.objects.get(id=category_id)
+        context["category_name"] = category_name
+        context["products_in_category"] = get_category_products(category_id)
+        return context
 
 
 class ContactViews(LoginRequiredMixin, TemplateView):

@@ -5,11 +5,11 @@
 {% include 'catalog/menu.html' %}
 <div class="row mt-5">
     <h2 class="container text-start ms-5 me-5 text-primary fw-bolder w-50">
-        Все продукты нашего магазина
+        Продукты категории "{{ category_name }}"
     </h2>
 </div>
 <div class="row row-cols-md-3 g-4 m-3">
-    {% for product in object_list %}
+    {% for product in products_in_category %}
     {% if product.is_published == True %}
     <div class="col d-flex flex-wrap align-items-stretch">
         <div class="card p-3">
